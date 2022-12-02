@@ -1,0 +1,32 @@
+h1 {
+    background-color: rgb(154, 86, 175);
+    font-family: "Impact", fantasy;
+    text-align: left;
+    font-size: 70px;
+    font-stretch: ultra-expanded;
+    padding-left: 20px;
+    margin-bottom: 0px;
+    }
+
+body {
+    margin-left: 0px;margin-top: 0px;margin-right: 0px; margin-bottom: 0px;
+}
+
+ul.nav {
+    padding-left: 0px;
+    background-color: #df9a39;
+    text-align: center;
+    margin-top: 0px;margin-bottom: 0px;;padding-bottom: 0px;padding-top: 0px;
+    }
+    ul.nav > li {
+    display: inline-block;
+    padding: 10px 20px;
+    }
+    ul.nav > li:hover {
+    background-color: #956726;
+    }
+    ul.nav > li > a {
+    color: white;
+    text-decoration: none;
+    }
+      
