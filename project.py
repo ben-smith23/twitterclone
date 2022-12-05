@@ -10,7 +10,7 @@ so you must run pip install in order to get it.
 After doing do, this file should "just work".
 '''
 
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template, send_from_directory, request
 app = Flask(__name__)
 
 import sqlite3
@@ -41,10 +41,12 @@ def root():
             'username': row_users[0],
             'age': row_users[1]
         })
-    return render_template('root.html', messages=messages)
+    return render_template('root.html', messages=messages, logged_in = False)
 
 @app.route('/login')     
 def login():
+    username = request.args.get('username')
+    password = request.args.get('password')
     return render_template('login.html')
 
 @app.route('/logout')     
