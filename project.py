@@ -10,7 +10,7 @@ so you must run pip install in order to get it.
 After doing do, this file should "just work".
 '''
 
-from flask import Flask, render_template, send_from_directory, request
+from flask import Flask, render_template, send_from_directory, request, make_response
 app = Flask(__name__)
 
 import sqlite3
@@ -43,11 +43,35 @@ def root():
         })
     return render_template('root.html', messages=messages, logged_in = False)
 
-@app.route('/login')     
+def are_credentials_good(username, password):
+    # FIXME:
+    # look in db and confirm password is correct
+    if username == 'haxor' and password == 'truth':
+        return True
+
+@app.route('/login', methods=['GET', 'POST'])     
 def login():
     username = request.args.get('username')
     password = request.args.get('password')
-    return render_template('login.html')
+
+    good_credentials = are_credentials_good(username, password)
+
+    if username is None:
+        return render_template('login.html', bad_credentials=False)
+        
+    else:   
+        if not good_credentials:
+            return render_template('login.html', bad_credentials=True)
+        else:
+            template = render_template(
+                'login.html',
+                bad_credentials = False,
+                logged_in = True
+            response = make_response(template)
+            response.set_cookie('username', username)
+            response.set_cookie('username', username)
+            return response
+            )
 
 @app.route('/logout')     
 def logout():

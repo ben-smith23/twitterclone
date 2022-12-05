@@ -2,7 +2,14 @@
 
 {% block content %}
 <h2>Login Webpage</h2>
-<form action="'\login" method ="POST">
+
+{% if bad_credentials %}
+<p class = error>
+    ERROR: Username or password incorrect.
+</p>
+{% endif %}
+
+<form action="/login" method ="POST">
     <table>
         <tr>
             <td>
