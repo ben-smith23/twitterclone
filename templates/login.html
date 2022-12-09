@@ -4,29 +4,36 @@
 <h2>Login Webpage</h2>
 
 {% if bad_credentials %}
-<p class = error>
+<p class=error>
     ERROR: Username or password incorrect.
 </p>
 {% endif %}
 
-<form action="/login" method ="POST">
-    <table>
+<form action='/login' method="POST">
+    
+    <script>
+    function myFunctionpass() {
+      var x = document.getElementById("myInput");
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+    </script>
+
+    <table class=center>
         <tr>
-            <td>
-                username
-            </td>
-            <td>
-                <input type=text name=username></td>
+            <td><input type=text name=username placeholder="Username"></td>
         </tr>
         <tr>
-            <td>password</td>
-            <td><input type=text name=password</td>
+            <td><input type=password name=password placeholder="Password" id="myInput"></td>
+            <td><input type="checkbox" onclick="myFunctionpass()">Show Password</td>
         </tr>
         <tr>
-            <td></td>
             <td><input type=submit value='log in'></td>
         </tr>
     </table>
 </form>
-<p>New Information</p>
+<p>New information.</p>
 {% endblock %}

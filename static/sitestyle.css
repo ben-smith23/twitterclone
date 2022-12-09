@@ -1,7 +1,7 @@
-h1 {
+h1.home2 {
     background-color: rgb(154, 86, 175);
     font-family: "Impact", fantasy;
-    text-align: left;
+    text-align: center;
     font-size: 70px;
     font-stretch: ultra-expanded;
     padding-left: 20px;
@@ -38,4 +38,18 @@ ul.nav {
       
 p.error {
   color: red;
+}
+
+a.home {
+  color: yellow;
+  text-decoration: none;
+}
+
+table.center{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+span.background {
+  background-color: aqua;
 }

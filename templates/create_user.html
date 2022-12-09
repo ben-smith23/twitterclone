@@ -1,6 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Create User Webpage</h2>
+<span class=background>
+<h2>Create Account</h2>
+
+<script>
+    function myFunctionpass() {
+      var x = document.getElementById("myInput");
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+    </script>
+
+<table class=center>
+    <tr>
+        <td><input type=text name=username placeholder="Username"></td>
+    </tr>
+    <tr>
+        <td><input type=password name=password placeholder="Password" id="myInput"></td>
+        <td><input type="checkbox" onclick="myFunctionpass()">Show Password</td>
+    </tr>
+    <tr>
+        <td><input type=password name=password placeholder="Confirm Password" id="myInput"></td>
+        <td><input type="checkbox" onclick="myFunctionpass()">Show Password</td>
+    </tr>
+    <tr>
+        <td><input type=submit value='Create'></td>
+    </tr>
+</table>
+
 <p>New Information</p>
+</span>
 {% endblock %}
