@@ -1,0 +1,14 @@
+{% extends 'base.html' %} {% block title %} {% endblock %} {% block content %}
+{{username}}'s messages:
+{% for message in messages %}
+{{message.text}}
+
+posted at: {{message.created_at}}
+delete edit
+{% endfor %}
+
+Delete your account
+
+
+Change your password
+{% endblock %}

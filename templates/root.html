@@ -1,18 +1,12 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block title %}
+Home
 
-{% block content %}
-<h2>Home</h2>
-<p>Welcome... to your new social media addiction</p>
+Welcome to twitter clone
+{% endblock %} {% block content %}
+Profile Picture	Sender (age)	Message	Created_at
+{% for message in messages %}
+'profile pic 	{{message['username']}} ({{message['age']}}) 	{{message['message']}} 	{{message['created_at']}}
+{% endfor %}
 
-<table>
-    <tr><th>sender (age)</th><th>message</th><th>created_at</th></tr>
-    {% for message in messages %}
-    <tr>
-        <td>{{message['username']}} ({{message['age']}})</td>
-        <td>{{message['message']}}</td>
-        <td>{{message['created_at']}}</td>
-    </tr>
-    {% endfor %}
-</table>
-
-{% endblock %}
+CONVERT TO JSON
+{% endblock %} 

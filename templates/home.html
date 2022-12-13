@@ -1,0 +1,16 @@
+{% extends 'base.html' %} {% block title %} {% endblock %} {% block content %} {%if username %}
+Welcome Home, {{username}}!
+{% else %}
+Welcome Home!
+{% endif %} {% for message in messages %}
+{{message.username}} says {{message.text}}
+
+posted at: {{message.created_at}}
+{%if username == message.username %} delete edit {% endif %}
+{% endfor %}
+
+
+
+
+
+/a> {% endblock %}
