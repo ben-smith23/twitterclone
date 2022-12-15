@@ -1,16 +1,31 @@
-{% extends 'base.html' %} {% block title %} {% endblock %} {% block content %} {%if username %}
-Welcome Home, {{username}}!
-{% else %}
-Welcome Home!
-{% endif %} {% for message in messages %}
-{{message.username}} says {{message.text}}
+{% extends 'base.html' %}
 
-posted at: {{message.created_at}}
-{%if username == message.username %} delete edit {% endif %}
+{% block title %}
+    <title>WEBPAGE test run: home</title>
+{% endblock %}
+
+
+{% block content %}
+    {%if username %}
+    <h1>Welcome, {{username}}!</h1>
+    {% else %}
+    <h1>Welcome!</h1>
+    {% endif %}
+
+    {% for message in messages %}
+    <div class="display-messages">
+        <h3>{{message.username}} says {{message.text}}</h3>
+        <p>posted at: {{message.created_at}}</p>
+        {%if username == message.username %}
+            <a class="delete-message" href= "/delete_message/{{message.id}}">delete </a>
+            <a class="delete-message" href= "/edit_message/{{message.id}}"> edit </a>
+        {% endif %}
+        <br>
+    </div>
 {% endfor %}
+<br> <br> <br> <br> <br> <br>
+<a class="json" href= "/home.json">json</a>
 
 
 
-
-
-/a> {% endblock %}
+{% endblock %}

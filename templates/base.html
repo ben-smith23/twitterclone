@@ -20,8 +20,8 @@
     <body>
         <h1 class=home2><a class=home href='/'>loveland</a> <a href='/'><img src=static/doglogo.png  style="width:50px;height:50px;"></a> </h1>
         <ul class=nav>
-            {% if logged_in %}
-            <li><a href='/create_message'>gettext(Create Message)</a></li>
+            {% if login_successful %}
+            <li><a href='/create_message'>Create Message</a></li>
             <li><a href='/logout'>Logout</a></li>
             {% else %}
             <li><a href='/login'>Login</a></li>

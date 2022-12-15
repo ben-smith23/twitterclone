@@ -97,40 +97,27 @@ def home_json():
 
 @app.route('/login', methods=['GET', 'POST'])     
 def login():
-    print_debug_info()
-    # requests (plural) library for downloading;
-    # now we need request singular 
-    username = request.form.get('username')
-    password = request.form.get('password')
-    print('username=', username)
-    print('password=', password)
-
-    good_credentials = are_credentials_good(username, password)
-    print('good_credentials=', good_credentials)
-
-    # the first time we've visited, no form submission
-    if username is None:
-        return render_template('login.html', bad_credentials=False)
-
-    # they submitted a form; we're on the POST method
-    else:
-        if not good_credentials:
-            return render_template('login.html', bad_credentials=True)
+    if request.form.get('username'):
+        con = sqlite3.connect(args.db_file)
+        cur = con.cursor()
+        cur.execute('''
+            SELECT username, password from users where username=? and password=? ;
+        ''', (request.form.get('username'), request.form.get('password')))
+        rows = cur.fetchall()
+        if len(list(rows))==0:
+            login_successful=False
         else:
-            # if we get here, then we're logged in
-            #return 'login successful'
+            login_successful =True
 
-            # create a cookie that contains the username/password info
-
-            template = render_template(
-                'login.html', 
-                bad_credentials=False,
-                logged_in=True)
-            #return template
-            response = make_response(template)
-            response.set_cookie('username', username)
-            response.set_cookie('password', password)
-            return response
+        if login_successful:
+            res = make_response(render_template('login.html', login_successful = True, username=request.form.get('username'), password=request.form.get('password')))
+            res.set_cookie('username', request.form.get('username'))
+            res.set_cookie('password', request.form.get('password'))
+            return res
+        else:
+            return render_template('login.html', login_unsuccessful = True)
+    else:
+        return render_template('login.html', login_default=True)
 
 @app.route('/logout')     
 def logout():
@@ -142,7 +129,7 @@ def logout():
 
 @app.route('/create_user', methods=['GET', 'POST'])     
 def create_user():
-    try:
+    try: 
         if request.form.get('username'):
                 if request.form.get('password1') == request.form.get('password2'):
                     con = sqlite3.connect(args.db_file)
@@ -159,7 +146,7 @@ def create_user():
     except sqlite3.IntegrityError: 
         return render_template('create_user.html', taken=True, username=request.form.get('username'))
 
-@app.route('/create_message')     
+@app.route('/create_message', methods=['POST', 'GET'])     
 def create_message():
     username = request.cookies.get('username')
     password=request.cookies.get('password')
@@ -252,7 +239,6 @@ def edit_message(id):
             return make_response(render_template('edit_message.html',not_your=True, id=id, username=request.cookies.get('username'), password=request.cookies.get('password')))
     else:
         return make_response(render_template('edit_message.html',default=True, id=id, username=request.cookies.get('username'), password=request.cookies.get('password')))
-# fix & make it work
 
 @app.route('/search_message', methods=['POST', 'GET'])
 def search_message():
@@ -300,7 +286,6 @@ def change_password(username):
         else: 
             return make_response(render_template('change_password.html', not_your_username=True, username=request.cookies.get('username'), password=request.cookies.get('password')))
     else: return make_response(render_template('change_password.html', username=request.cookies.get('username'), password=request.cookies.get('password')))
-
 
 @app.route('/user')
 def user():

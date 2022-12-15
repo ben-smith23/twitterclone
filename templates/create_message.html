@@ -1,13 +1,19 @@
-{% extends 'base.html' %} {% block title %}
-Create Message
-{% endblock %} {% block content %}
-Create a message
-{% if created %} Message successfully created! {% endif %}
-enter a message: 
-<form action="http:///create_message" method="POST" target="_blank">
+{% extends 'base.html' %}
+
+{% block title %}
+<title>WEBPAGE test run: message</title>
+{% endblock %}
+
+
+{% block content %}
+{% if created %}
+Your message was created!
+{% endif %}
+
+<form action=/create_message method=POST>
     <table>
-        <tbody><tr><td>enter a message: </td><td><input class="m_textfield" type="text" name="newmessage"></td></tr>
-    </tbody></table>
-    <input type="submit" value="enter">
-</form>	
+        <tr><td>Post A Post: </td><td><input class="textfield" type=text name=newMessage></td></tr>
+    </table>
+    <input type=submit value='enter'>
+</form>
 {% endblock %} 

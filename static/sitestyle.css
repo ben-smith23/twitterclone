@@ -8,8 +8,13 @@ h1.home2 {
     margin-bottom: 0px;
     }
 
+.body {
+  margin: auto;
+}
+
 body {
     margin-left: 0px;margin-top: 0px;margin-right: 0px; margin-bottom: 0px;
+    background-color: rgb(246, 214, 255);
 }
 
 ul.nav {
@@ -38,6 +43,7 @@ ul.nav {
       
 p.error {
   color: red;
+  text-align: center;
 }
 
 a.home {
@@ -52,4 +58,12 @@ table.center{
 
 span.background {
   background-color: aqua;
+}
+
+h2 {
+  text-align: center;
+  font-family: "arial", sans-serif;
+    text-align: center;
+    font-size: 30px;
+    margin-top: 10px;margin-bottom: 10px;padding-right: 200px;
 }

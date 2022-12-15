@@ -1,12 +1,33 @@
-{% extends 'base.html' %} {% block title %}
-Home
+{% extends 'base.html' %}
 
-Welcome to twitter clone
-{% endblock %} {% block content %}
-Profile Picture	Sender (age)	Message	Created_at
-{% for message in messages %}
-'profile pic 	{{message['username']}} ({{message['age']}}) 	{{message['message']}} 	{{message['created_at']}}
+<body class=body>
+
+{% block title %}
+    <title>WEBPAGE test run: home</title>
+{% endblock %}
+
+
+{% block content %}
+    {%if username %}
+    <h1>Welcome Home, {{username}}!</h1>
+    {% else %}
+    <h1>Welcome Home!</h1>
+    {% endif %}
+
+    {% for message in messages %}
+    <div class="display-messages">
+        <h3>{{message.username}} says {{message.text}}</h3>
+        <p>posted at: {{message.created_at}}</p>
+        {%if username == message.username %}
+            <a class="delete-message" href= "/delete_message/{{message.id}}">delete </a>
+            <a class="delete-message" href= "/edit_message/{{message.id}}"> edit </a>
+        {% endif %}
+        <br>
+    </div>
 {% endfor %}
+<br> <br> <br> <br> <br> <br>
+<a class="json" href= "/home.json">json</a>
 
-CONVERT TO JSON
-{% endblock %} 
+
+</body>
+{% endblock %}
