@@ -4,11 +4,14 @@
 {{message.text}}
 
 posted at: {{message.created_at}}
-delete edit
+<a href= "/delete_message">Delete</a> <a href= "/edit_message">Edit</a>
 {% endfor %}
 
-Delete your account
+<br>
 
+<a href= "/delete_account/<id>">Delete Account</a>
+
+<br>
 
 Change your password
 {% endblock %}

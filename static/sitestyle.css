@@ -6,6 +6,7 @@ h1.home2 {
     font-stretch: ultra-expanded;
     padding-left: 20px;
     margin-bottom: 0px;
+    -webkit-text-stroke: 2px rgb(133, 30, 30);
     }
 
 .body {
@@ -21,7 +22,7 @@ ul.nav {
     padding-left: 0px;
     background-color: #df9a39;
     text-align: center;
-    margin-top: 0px;margin-bottom: 0px;;padding-bottom: 0px;padding-top: 0px;
+    margin-top: 0px;margin-bottom: 20px;;padding-bottom: 0px;padding-top: 0px;
     }
     ul.nav > li {
     display: inline-block;
@@ -41,8 +42,12 @@ ul.nav {
         }
       }
       
-p.error {
+.error {
   color: red;
+  text-align: center;
+}
+
+.success {
   text-align: center;
 }
 
@@ -66,4 +71,66 @@ h2 {
     text-align: center;
     font-size: 30px;
     margin-top: 10px;margin-bottom: 10px;padding-right: 200px;
+}
+
+.homepage {
+  font-family: "monaco", monospace;
+  text-align: justify;
+  font-size: medium;
+  font-weight: lighter;
+  padding-left: 150px;padding-right: 150px;
+}
+
+.loveland {
+  color: yellow;
+  font-family: "Impact", fantasy;
+  font-stretch: ultra-expanded;
+  -webkit-text-stroke: 0.5px rgb(133, 30, 30);
+}
+
+.bio {
+  font-size: 5pt;
+  text-align: left;
+  padding-left: 20;
+  padding-top: 20;
+  padding-right: 400px;
+}
+
+.entrance {
+  font-family: "courier new", monospace;
+  padding-left: 150px;
+  font-size: smaller;
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: 20 auto; /* Gives that scrolling effect as the typing happens */
+  letter-spacing: .1em; /* Adjust as needed */
+  animation: 
+    typing 3.5s steps(40, end),
+    blink-caret .75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+.bye {
+  font-family: "Impact", fantasy;
+  text-align: center;
+  font-size: 100pt;
+}
+
+.display-messages {
+  border-left: 3px;
+  border-color: rgb(55, 62, 190);
+  border: solid;
+  margin-left: 50px;padding-left: 25px;padding-top: 5px;padding-bottom: 5px;margin-right: 50px;
+  border-radius: 25px;
+  background-color: rgb(187, 203, 165);
+}
+
+.posted {
+  font-weight: lighter;
+  color: gray;
+  font-size: xx-small;
 }

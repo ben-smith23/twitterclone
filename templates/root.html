@@ -1,33 +1,15 @@
 {% extends 'base.html' %}
-
-<body class=body>
-
-{% block title %}
-    <title>WEBPAGE test run: home</title>
-{% endblock %}
-
-
 {% block content %}
-    {%if username %}
-    <h1>Welcome Home, {{username}}!</h1>
-    {% else %}
-    <h1>Welcome Home!</h1>
-    {% endif %}
 
-    {% for message in messages %}
-    <div class="display-messages">
-        <h3>{{message.username}} says {{message.text}}</h3>
-        <p>posted at: {{message.created_at}}</p>
-        {%if username == message.username %}
-            <a class="delete-message" href= "/delete_message/{{message.id}}">delete </a>
-            <a class="delete-message" href= "/edit_message/{{message.id}}"> edit </a>
-        {% endif %}
-        <br>
-    </div>
-{% endfor %}
-<br> <br> <br> <br> <br> <br>
+<h1 class = homepage>
+    Welcome to <span class=loveland>loveland</span>, your new social media addiction. We hope that by the end of your visit, you've further disrupted the fabric of society. Create an account or log in to get started. Enjoy!
+</h1>
+
+<div class=bio>
+<b>About the creator of this site, brought to you by ChatGPT:</b>
+Ben is a man of many talents and interests. He is world-renowned for his incredible skill at knitting incredibly detailed and life-like replicas of famous landmarks and buildings out of yarn, but he also has a passion for taxidermy. In his spare time, he enjoys collecting rare and exotic butterflies and can often be found in his backyard garden, tending to his prized collection of Venus flytraps. He is also a skilled salsa dancer and has won numerous awards for his talents on the dance floor. Despite his busy schedule, Ben always makes time for his true passion: competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitiveetitivecompetitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitivecompetitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitive competitivecompetitive.
+</div>
+
 <a class="json" href= "/home.json">json</a>
 
-
-</body>
 {% endblock %}

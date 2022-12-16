@@ -10,18 +10,22 @@ so you must run pip install in order to get it.
 After doing do, this file should "just work".
 '''
 
-from flask import Flask, render_template, send_from_directory, request, make_response
+from flask import Flask, render_template, send_from_directory, request, make_response, redirect, url_for
 from flask_babel import Babel, gettext, ngettext
 
+import markdown_compiler
 
 app = Flask(__name__)
-#app.config.['BABEL_DEFAULT_LOCALE'] = 'en'
+
+'''
+app.config.['BABEL_DEFAULT_LOCALE'] = 'en'
 babel = Babel(app)
 
+@babel.localeselector
 def get_locale():
     return 'en'
-    request.accept_languages.best({})
-
+    request.accept_languages.best(['en', 'es', 'de'])
+'''
 import sqlite3, json
 from datetime import datetime
 import argparse
@@ -29,6 +33,19 @@ parser = argparse.ArgumentParser(description='Create a database for the twitter 
 parser.add_argument('--db_file', default='twitter_clone.db')
 # there is no standard file extension; people use .db .sql .sql3 .database
 args = parser.parse_args()
+
+def are_credentials_good(username, password):
+    con = sqlite3.connect(args.db_file)
+    cur = con.cursor()
+    sql = "select username, password from users;"
+    user_dict = {}
+    cur.execute(sql)
+    for user in cur.fetchall():
+        user_dict[user[0]] = user[1]
+    if username in user_dict and password == user_dict[username]:
+        return True
+    else:
+        return False
 
 @app.route('/')     
 def root():
@@ -73,20 +90,13 @@ def print_debug_info():
     print('request.cookies.get("username")=', request.cookies.get("username"))
     print('request.cookies.get("password")=', request.cookies.get("password"))
 
-def are_credentials_good(username, password):
-    # FIXME:
-    # look inside the databasse and check if the password is correct for the user
-    if username == 'haxor' and password == '1337':
-        return True
-    else:
-        return False
-
 @app.route('/home.json')
 def home_json():
     con = sqlite3.connect(args.db_file)
     cur = con.cursor()
     cur.execute('''
-        SELECT sender_id, message, created_at, id from messages;''')
+        SELECT sender_id, message, created_at, id from messages;
+    ''')
     rows = cur.fetchall()
     messages = []
     for row in rows:
@@ -169,9 +179,9 @@ def create_message():
                 con.commit()
             except:
                 print("didn\'t work")
-            return make_response(render_template('create_message.html', created=True, good_credentials=good_credentials ))
+            return make_response(render_template('create_message.html', created=True, username=request.cookies.get('username'), password=request.cookies.get('password')))
         else: 
-            return make_response(render_template('create_message.html', created=False, good_credentials=good_credentials))
+            return make_response(render_template('create_message.html', created=False, username=request.cookies.get('username'), password=request.cookies.get('password')))
     else:
         return login()
 
@@ -303,9 +313,42 @@ def user():
         for row in rows:
             messages.append({'text': row[0], 'created_at': row[1], 'id':row[2]})
         messages.reverse()
-        return make_response(render_template('user.html', messages=messages, username=request.cookies.get('username'), good_credentials=good_credentials))
+        return make_response(render_template('user.html', messages=messages, username=request.cookies.get('username'), password=request.cookies.get('password')))
     else: 
         return login()
+
+
+@app.route('/home', methods=['get', 'post'])
+def home():
+    con = sqlite3.connect(args.db_file)
+    cur = con.cursor()
+    cur.execute('''
+        SELECT username, password from users where username=? and password=? ;
+    ''', (request.cookies.get('username'), request.cookies.get('password')))
+    rows = cur.fetchall()
+    if len(list(rows))==0:
+        login_successful=False
+    else:
+        login_successful=True
+
+
+    cur.execute('''
+        SELECT sender_id, message, created_at, id from messages;
+    ''')
+    rows = cur.fetchall()
+    messages = []
+    for row in rows:
+        messages.append({'username': row[0], 'text': row[1], 'created_at':row[2], 'id':row[3]})
+    messages.reverse()
+
+    #if request.method == 'GET':
+    if request.form.get('delete'):
+        print('success!!!!!!!!!!!!!!!')
+
+    if login_successful:
+        return render_template('home.html',username=request.cookies.get('username'), password=request.cookies.get('password'), messages=messages)
+    else:
+        return render_template('home.html', messages=messages)
 
 @app.route('/static/<path>')
 def static_directory(path):

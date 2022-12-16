@@ -5,7 +5,9 @@
 <h1>Login here</h1>
 {% endif %}
 {% if login_successful %}
-<h1>Login Poo</h1>
+<h1 class=entrance>We've been waiting for you, {{username}}. <br> Don't ever leave us. <br> <a href="/create_message">Post a post here.</a>
+<br> <a href="/home">See other posts here.</a>
+</h1>
 {% endif %}
 
 {% if bad_credentials %}
@@ -37,7 +39,7 @@
             <td><input type="checkbox" onclick="myFunctionpass()">Show Password</td>
         </tr>
         <tr>
-            <td><input type=submit value='log in'></td>
+            <td><input type=submit value='Log In'></td>
         </tr>
     </table>
 

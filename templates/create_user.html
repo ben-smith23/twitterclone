@@ -26,11 +26,33 @@
   }
   </script>
 
+{% if successful %}
+<span class=success>
+Sign up successful!. <a href="/login">Log in here.</a>
+</span>
+{% endif %}
+
+{% if wrongPass %}
+<span class=error>
+ERROR: Passwords did not match. Please try again.
+</span>
+{% endif %}
+
+{% if taken %}
+<span class=error>
+ERROR: Username '{{username}}' is already taken. Please choose a different username.
+</span>
+{% endif %}
+
+
 <form action=/create_user method=POST>
 <table class=center>
     <tr>
         <td><input type=text name=username placeholder="Username"></td>
     </tr>
+    <tr>
+      <td><input type=number name=Age placeholder="Age" min="0" max="99"></td>
+  </tr>
     <tr>
         <td><input type=password name=password1 placeholder="Password" id="myInput"></td>
         <td><input type="checkbox" onclick="myFunctionpass()">Show Password</td>
@@ -44,18 +66,6 @@
     </tr>
 </table>
 </form>
-
-{% if successful %}
-Thank you for signing up. Please proceed to log in
-{% endif %}
-
-{% if wrongPass %}
-ERROR: Passwords didn't match. Please try again
-{% endif %}
-
-{% if taken %}
-Account with username '{{username}}' already exists. Please try a different username ;)
-{% endif %}
 
 
 {% endblock %}
