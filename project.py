@@ -202,15 +202,20 @@ def delete_account(username):
     
 @app.route('/delete_message/<id>', methods=['GET'])
 def delete_message(id):
-    con = sqlite3.connect(args.db_file) 
-    cur = con.cursor()
-    cur.execute('''
-        SELECT sender_id from messages where id=?;
-    ''', (id,))
-    rows = cur.fetchall()
-    if rows[0][0] == request.cookies.get('username'):
+    username = request.cookies.get('username')
+    password = request.cookies.get('password')
+
+    good_credentials=are_credentials_good(username,password)
+
+    if good_credentials:
+        con = sqlite3.connect(args.db_file) 
+        cur = con.cursor()
         cur.execute('''
-            DELETE from messages where id=?;
+            SELECT sender_id from messages where id=?;
+        ''', (id,))
+        row = cur.fetchall()
+        cur.execute('''
+            DELETE from messages where username=?;
         ''', (id,))
         con.commit()
     else:
@@ -219,20 +224,26 @@ def delete_message(id):
 
 @app.route('/edit_message/<id>', methods=['POST', 'GET'])
 def edit_message(id):
-    if request.form.get('message'):
-        con = sqlite3.connect(args.db_file) 
+    username = request.cookies.get('username')
+    if request.form.get('newMessage'):
+        con = sqlite3.connect(args.db_file)
         cur = con.cursor()
+        sql = 'SELECT id from users where username=?;'
+        cur.execute(sql, [username])
+        for user in cur.fetchall():
+            pass
+        now = datetime.now()
+        dt_string = now.strftime("%Y-%m-%d %H:%M:%S")
+        # +0.5 EC - formatting date & time without decimals 
         cur.execute('''
-            SELECT sender_id, message from messages where id=?;
-        ''', (id,))
-        rows = cur.fetchall()
-        if rows[0][0] == request.cookies.get('username'):
-            cur.execute('''
                 UPDATE messages
                 SET message = ?
                 WHERE id = ?
-            ''', (request.form.get('newmessage'),id))
+            ''', (request.form.get('newMessage'),id))
+        try:
             con.commit()
+        except:
+            print("didn\'t work")
             return make_response(render_template('edit_message.html',allGood=True, id=id, username=request.cookies.get('username'), password=request.cookies.get('password')))
         else:
             return make_response(render_template('edit_message.html',not_your=True, id=id, username=request.cookies.get('username'), password=request.cookies.get('password')))
@@ -351,6 +362,14 @@ def home():
         return render_template('home.html',username=request.cookies.get('username'), password=request.cookies.get('password'), messages=messages)
     else:
         return render_template('home.html', messages=messages)
+
+@app.errorhandler(404)
+def page_not_found(e):
+  return render_template('home.html')
+
+@app.errorhandler(500)
+def error_500(e):
+  return render_template('home.html')
 
 @app.route('/static/<path>')
 def static_directory(path):

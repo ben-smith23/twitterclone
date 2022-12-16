@@ -1,12 +1,17 @@
 {% extends 'base.html' %}
 
+{% block title %}
+    <title>WEBPAGE: edit message</title>
+{% endblock %}
+
+
 {% block content %}
 
 {% if default %}
 <h1>Edit your message:</h1>
 <form action=/edit_message/{{id}} method=POST>
     <table>
-        <tr><td>enter your edited message: </td><td><input class="textfield" type=text name=newmessage></td></tr>
+        <tr><td>enter your edited message: </td><td><input class="textfield" type=text name=newMessage></td></tr>
     </table>
     <input type=submit value='enter'>
 </form>
