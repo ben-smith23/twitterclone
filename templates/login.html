@@ -2,7 +2,7 @@
 
 {% block content %}
 {% if login_default %}
-<h1>Login here</h1>
+<h2>Login</h2>
 {% endif %}
 {% if login_successful %}
 <h1 class=entrance>We've been waiting for you, {{username}}. <br> Don't ever leave us. <br> <a href="/create_message">Post a post here.</a>
@@ -10,7 +10,8 @@
 </h1>
 {% endif %}
 
-{% if bad_credentials %}
+{% if login_unsuccessful %}
+<h2>Login</h2>
 <p class=error>
     ERROR: Username or password incorrect.
 </p>
@@ -43,7 +44,7 @@
         </tr>
     </table>
 
-Don't have an account? <a href="/create_user">Create one here.</a> 
+<p>Don't have an account? <a href="/create_user">Create one here.</a> </p>
 
 </form>
 {% endif %}

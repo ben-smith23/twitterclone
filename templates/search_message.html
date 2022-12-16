@@ -1,34 +1,33 @@
 {% extends 'base.html' %}
 
-{% block title %}
-    <title>WEBPAGE: search message</title>
-{% endblock %}
-
-
 {% block content %}
 
 {% if default %}
-<h1>Search</h1>
+<div class = table>
 <form action=/search_message method=POST>
     <table>
-        <tr><td>search: </td><td><input class="textfield" type=text name=search></td></tr>
+        <tr><td><input class="textfield" type=text name=search> <input type=submit value='search'></td></tr>
     </table>
-    <input type=submit value='search'>
 </form>
-{% else %}
-<h1>Results:</h1>
-{% for message in messages %}
-<div class="display-messages", style="outline-style: solid;">
-    <h3>{{message.username}} says {{message.text}}</h3>
-    <p>posted at: {{message.created_at}}</p>
-    {%if username == message.username %}
-        <a class="delete-message" href= "/delete_message/{{message.id}}">delete </a>
-        <a class="delete-message" href= "/edit_message/{{message.id}}"> edit </a>
-    {% endif %}
-    <br>
 </div>
+{% else %}
+<h2>Results:</h2>
+{% for message in messages %}
+    <div class=display-messages>
+        <img src="{{message.profpic}}" width="15" height="15">
+        <b>@{{message.username}}</b><br>
+            {{message.message}} <br>
+        <span class=posted>{{message.created_at}}</span>
+        {%if username == message.username %}
+        <span class=msg> 
+        <a href= "/edit_message/<id>"><u>edit</u></a>
+          
+        <a href= "/delete_message/<id>"><u>delete</u></a>
+        </span> 
+        {% endif %}
+        <br>
+    </div>
 {% endfor %}
 {% endif %}
-
 
 {% endblock %}

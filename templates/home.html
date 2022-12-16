@@ -5,20 +5,24 @@
 
     {% for message in messages %}
     <div class=display-messages>
-        <b>{{message.username}}</b><br>
-            {{message.text}} <br>
+        <img src="{{message.profpic}}" width="15" height="15">
+        <b>@{{message.username}}</b><br>
+            {{message.message}} <br>
         <span class=posted>{{message.created_at}}</span>
         {%if username == message.username %}
-            <a class="delete-message" href= "/delete_message/{{message.id}}">delete </a>
-            <a class="delete-message" href= "/edit_message/{{message.id}}"> edit </a>
+        <span class=msg> 
+        <a href= "/edit_message/<id>"><u>edit</u></a>
+          
+        <a href= "/delete_message/<id>"><u>delete</u></a>
+        </span> 
         {% endif %}
         <br>
     </div>
     <br>
 {% endfor %}
-<br> <br> <br> <br> <br> <br>
-<a class="json" href= "/home.json">json</a>
 
+<a class=json href= "/home.json">Convert to JSON</a>
 
+<br>
 
 {% endblock %}

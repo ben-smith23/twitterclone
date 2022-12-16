@@ -1,17 +1,32 @@
-{% extends 'base.html' %} {% block title %} {% endblock %} {% block content %}
-{{username}}'s messages:
-{% for message in messages %}
-{{message.text}}
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{username}}'s messages:</h2>
 
-posted at: {{message.created_at}}
-<a href= "/delete_message">Delete</a> <a href= "/edit_message">Edit</a>
+{% for message in messages %}
+    <div class=display-messages>
+        <img src="{{message.profpic}}" width="15" height="15">
+        <b>@{{message.username}}</b><br>
+            {{message.message}} <br>
+        <span class=posted>{{message.created_at}}</span>
+        {%if username == message.username %}
+        <span class=msg> 
+        <a href= "/edit_message/<id>"><u>edit</u></a>
+          
+        <a href= "/delete_message/<id>"><u>delete</u></a>
+        </span> 
+        {% endif %}
+        <br>
+    </div>
+    <br>
 {% endfor %}
 
-<br>
 
-<a href= "/delete_account/<id>">Delete Account</a>
 
 <br>
 
-Change your password
+<a href= "/delete_account/<username>">Delete Account</a>
+
+<br>
+
+<a href= "/change_password/<username>">Change Password</a>
 {% endblock %}

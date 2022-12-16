@@ -56,9 +56,15 @@ a.home {
   text-decoration: none;
 }
 
-table.center{
+table{
   margin-left: auto;
   margin-right: auto;
+}
+
+.table{
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }
 
 span.background {
@@ -121,6 +127,7 @@ h2 {
 }
 
 .display-messages {
+  font-family: "monaco", monospace;
   border-left: 3px;
   border-color: rgb(55, 62, 190);
   border: solid;
@@ -133,4 +140,31 @@ h2 {
   font-weight: lighter;
   color: gray;
   font-size: xx-small;
+}
+
+a.json {
+  font-family: "monaco", monospace;
+  border-left: 3px;
+  border-color: rgb(55, 62, 190);
+  border: solid;
+  margin-left: 50px;padding-left: 25px;padding-top: 5px;padding-bottom: 5px;margin-right: 50px;
+  border-radius: 25px;
+  background-color: rgb(196, 128, 59);
+  text-decoration: none;
+  padding-left: 10px;padding-right: 10px;
+  margin-bottom: 20px;
+}
+
+.msg > a{
+  font-size: xx-small;
+  text-align: right;
+  text-decoration: none;
+  color: blue;
+  padding-top: 0px;
+  margin-top: 0px;
+}
+
+p {
+  text-align: center;
+  padding-right: 200px;
 }

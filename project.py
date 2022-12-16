@@ -14,6 +14,7 @@ from flask import Flask, render_template, send_from_directory, request, make_res
 from flask_babel import Babel, gettext, ngettext
 
 import markdown_compiler
+import bleach
 
 app = Flask(__name__)
 
@@ -174,7 +175,7 @@ def create_message():
             # +0.5 EC - formatting date & time without decimals 
             cur.execute('''
                 INSERT INTO messages (sender_id, message, created_at) values (?,?,?);
-            ''', [user[0], request.form.get('newmessage'), dt_string])
+            ''', [user[0], bleach.linkify(request.form.get('newmessage')), dt_string])
             try:
                 con.commit()
             except:
@@ -187,29 +188,18 @@ def create_message():
 
 @app.route('/delete_account/<username>')
 def delete_account(username):
-    if request.cookies.get('username') == username: 
-        con = sqlite3.connect(args.db_file)
+    username = request.cookies.get('username')
+    if request.cookies.get('username') == username:
+        con = sqlite3.connect(args.db_file) 
         cur = con.cursor()
-        sql = 'SELECT id from users where username=?;'
-        cur.execute(sql, [username])
-        for user in cur.fetchall():
-            pass
-        cur.execute('''
-            DELETE from messages where id=?;
-        ''', [user[0]])
-
         cur.execute('''
             DELETE from users where username=?;
-        ''', [username])
+        ''', (username,))
         con.commit()
-        response = make_response(render_template('delete_account.html'))
-        response.set_cookie('username', '', expires=0)
-        response.set_cookie('password', '', expires=0)
-
         return make_response(render_template('delete_account.html', not_your_username=False, username=request.cookies.get('username'), password=request.cookies.get('password')))
-    else: 
+    else:
         return make_response(render_template('delete_account.html', not_your_username=True, username=request.cookies.get('username'), password=request.cookies.get('password')))
-
+    
 @app.route('/delete_message/<id>', methods=['GET'])
 def delete_message(id):
     con = sqlite3.connect(args.db_file) 
@@ -226,11 +216,10 @@ def delete_message(id):
     else:
         return make_response(render_template('delete_message.html', not_your_message=True, username=request.cookies.get('username'), password=request.cookies.get('password')))
     return make_response(render_template('delete_message.html', username=request.cookies.get('username'), password=request.cookies.get('password')))
-# fix & make it work, add in table?
 
 @app.route('/edit_message/<id>', methods=['POST', 'GET'])
 def edit_message(id):
-    if request.form.get('newmessage'):
+    if request.form.get('message'):
         con = sqlite3.connect(args.db_file) 
         cur = con.cursor()
         cur.execute('''
@@ -313,7 +302,7 @@ def user():
         for row in rows:
             messages.append({'text': row[0], 'created_at': row[1], 'id':row[2]})
         messages.reverse()
-        return make_response(render_template('user.html', messages=messages, username=request.cookies.get('username'), password=request.cookies.get('password')))
+        return make_response(render_template('user.html', messages=messages, username=request.cookies.get('username'),password=request.cookies.get('password'), good_credentials=good_credentials))
     else: 
         return login()
 
@@ -331,15 +320,27 @@ def home():
     else:
         login_successful=True
 
-
-    cur.execute('''
-        SELECT sender_id, message, created_at, id from messages;
-    ''')
-    rows = cur.fetchall()
     messages = []
-    for row in rows:
-        messages.append({'username': row[0], 'text': row[1], 'created_at':row[2], 'id':row[3]})
-    messages.reverse()
+    sql = 'select sender_id, message, created_at from messages order by created_at desc;'
+    cur_messages = con.cursor()
+    cur_messages.execute(sql)
+    # print("FETCHING=", cur_messages.fetchall())
+    for row_messages in cur_messages.fetchall():
+        sql='select username, age from users where id=?;'
+        cur_users = con.cursor()
+        cur_users.execute(sql, [row_messages[0]])
+        
+        for row_users in cur_users.fetchall(): 
+            pass
+            # cur_users = con.cursor()
+            # cur_users.execute(sql, [row_messages[0]])
+        messages.append({
+            'message': row_messages[1],
+            'created_at': row_messages[2],
+            'username': row_users[0],
+            'profpic': 'https://robohash.org/' + row_users[0],
+            'age': row_users[1]
+            })
 
     #if request.method == 'GET':
     if request.form.get('delete'):
@@ -356,5 +357,5 @@ def static_directory(path):
     return send_from_directory('static', path)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host="0.0.0.0")
     # app.run(host="0.0.0.0")
