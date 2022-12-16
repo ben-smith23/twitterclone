@@ -50,6 +50,7 @@ def are_credentials_good(username, password):
 
 @app.route('/')     
 def root():
+    global row_users
     con = sqlite3.connect(args.db_file)
     messages =[]
     sql = 'select sender_id, message, created_at from messages order by created_at desc'
@@ -61,15 +62,14 @@ def root():
         cur_users.execute(sql, [row_messages[0]])
         
         for row_users in cur_users.fetchall():
-            pass
 
-        messages.append({
-            'message': row_messages[1],
-            'created_at': row_messages[2],
-            'username': row_users[0],
-            'profpic': 'https://robohash.org/' + row_users[0],
-            'age': row_users[1]
-        })
+            messages.append({
+                'message': row_messages[1],
+                'created_at': row_messages[2],
+                'username': row_users[0],
+                'profpic': 'https://robohash.org/' + row_users[0],
+                'age': row_users[1]
+            })
 
     # check if logged in correctly
     username = request.cookies.get('username')
@@ -309,6 +309,7 @@ def user():
 
 @app.route('/home', methods=['get', 'post'])
 def home():
+    global row_users
     con = sqlite3.connect(args.db_file)
     cur = con.cursor()
     cur.execute('''
@@ -334,13 +335,13 @@ def home():
             pass
             # cur_users = con.cursor()
             # cur_users.execute(sql, [row_messages[0]])
-        messages.append({
-            'message': row_messages[1],
-            'created_at': row_messages[2],
-            'username': row_users[0],
-            'profpic': 'https://robohash.org/' + row_users[0],
-            'age': row_users[1]
-            })
+            messages.append({
+                'message': row_messages[1],
+                'created_at': row_messages[2],
+                'username': row_users[0],
+                'profpic': 'https://robohash.org/' + row_users[0],
+                'age': row_users[1]
+                })
 
     #if request.method == 'GET':
     if request.form.get('delete'):
