@@ -121,7 +121,7 @@ def login():
             login_successful =True
 
         if login_successful:
-            res = make_response(render_template('login.html', login_successful = True, username=request.form.get('username'), password=request.form.get('password')))
+            res = make_response(redirect(url_for('home')))
             res.set_cookie('username', request.form.get('username'))
             res.set_cookie('password', request.form.get('password'))
             return res

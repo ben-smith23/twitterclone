@@ -3,6 +3,11 @@
 
 {% block content %}
 
+{% if username and password %}
+<h1 class=entrance>We've been waiting for you, {{username}}. <br> Don't ever leave us. <br> <a href="/create_message">Post a post here.</a>
+<br> <a href="/home">See other posts here.</a>
+</h1>
+
     {% for message in messages %}
     <div class=display-messages>
         <img src="{{message.profpic}}" width="15" height="15">
@@ -20,6 +25,26 @@
     </div>
     <br>
 {% endfor %}
+{% else %}
+
+    {% for message in messages %}
+    <div class=display-messages>
+        <img src="{{message.profpic}}" width="15" height="15">
+        <b>@{{message.username}}</b><br>
+            {{message.message}} <br>
+        <span class=posted>{{message.created_at}}</span>
+        {%if username == message.username %}
+        <span class=msg> 
+        <a href= "/edit_message/<id>"><u>edit</u></a>
+          
+        <a href= "/delete_message/<id>"><u>delete</u></a>
+        </span> 
+        {% endif %}
+        <br>
+    </div>
+    <br>
+{% endfor %}
+{% endif %}
 
 <a class=json href= "/home.json">Convert to JSON</a>
 

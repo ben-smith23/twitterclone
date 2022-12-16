@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>{{username}}'s messages:</h2>
 
 {% for message in messages %}
     <div class=display-messages>
@@ -10,9 +9,9 @@
         <span class=posted>{{message.created_at}}</span>
         {%if username == message.username %}
         <span class=msg> 
-        <a href= "/edit_message/<id>"><u>edit</u></a>
-          
-        <a href= "/delete_message/<id>"><u>delete</u></a>
+        <a class=json href= "/edit_message/<id>"><u>edit</u></a>
+          <br>
+        <a class=json href= "/delete_message/<id>"><u>delete</u></a>
         </span> 
         {% endif %}
         <br>
@@ -21,12 +20,14 @@
 {% endfor %}
 
 
-
 <br>
 
-<a href= "/delete_account/<username>">Delete Account</a>
+<a class=json href= "/change_password/<username>">Change Password</a>
 
-<br>
 
-<a href= "/change_password/<username>">Change Password</a>
+<br> <br> <br> <br> <br>
+
+
+
+<a class=json href= "/delete_account/<username>">Delete Account</a>
 {% endblock %}
